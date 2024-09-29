@@ -24,8 +24,8 @@
   "pendidikan_terakhir",
   "no_rek_bca",
   "data_karyawan_tab",
-  "no_kontrak",
   "nrp",
+  "no_kontrak",
   "jabatan",
   "column_break_hjzs",
   "tanggal_bergabung",
@@ -52,6 +52,7 @@
   {
    "fieldname": "nama_lengkap",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Nama Lengkap",
    "reqd": 1
   },
@@ -242,7 +243,7 @@
  "image_field": "foto",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-09-29 11:12:14.448576",
+ "modified": "2024-09-29 11:31:05.819689",
  "modified_by": "Administrator",
  "module": "Hr Management",
  "name": "Karyawan",
