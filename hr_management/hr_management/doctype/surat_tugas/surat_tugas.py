@@ -22,13 +22,13 @@ class SuratTugas(Document):
 
 		# Ambil data dari child table `karyawan` yang ada di DocType SuratTugas
 		for item in self.karyawan:
-			karyawan_doc = frappe.get_doc('User', item.user_email)  # asumsikan ada field karyawan_id
+			karyawan_doc = frappe.get_doc('Karyawan', item.nrp)  # asumsikan ada field karyawan_id
 			karyawan_items.append({
 				'no': item.idx,
-				'nama': karyawan_doc.full_name,
+				'nama': karyawan_doc.nama_lengkap,
 				'nrp': karyawan_doc.nrp,
 				'jabatan': karyawan_doc.jabatan,
-				'tk': self.tanggal_keberangkatan,
+				'tk': self.tanggal_berangkat,
 				'foto_ktp': karyawan_doc.foto_ktp,
 				'foto_vaksin': karyawan_doc.foto_vaksin,
 			})
@@ -57,11 +57,13 @@ class SuratTugas(Document):
 		# pypandoc.convert_file(docx_file_path, 'pdf', outputfile=pdf_file_path)
 
 	def generate_single_document(self, doc, karyawan_items, keperluan, tanggal, nama_surat):
-		if karyawan_items[0]['foto_ktp']:
+		print(karyawan_items)
+		if karyawan_items[0]['foto_ktp'] is not None:
 			foto_ktp_name = karyawan_items[0]['foto_ktp'].split('/')[-1]
 			foto_ktp_path = frappe.utils.get_site_path('private', 'files', foto_ktp_name)
 
-		if karyawan_items[0]['foto_vaksin']:
+		foto_vaksin_path = None
+		if karyawan_items[0]['foto_vaksin'] is not None:
 			foto_vaksin_name = karyawan_items[0]['foto_vaksin'].split('/')[-1]
 			foto_vaksin_path = frappe.utils.get_site_path('private', 'files', foto_vaksin_name)
 
@@ -70,14 +72,14 @@ class SuratTugas(Document):
 		context = {
 			'no_surat': self.no_surat,
 			'keperluan': keperluan,
-			'lokasi_site': self.lokasi_site,
+			'lokasi_site': self.site,
 			'tanggal': tanggal,
 			'nama': karyawan_items[0]['nama'],
 			'nrp': karyawan_items[0]['nrp'],
 			'jabatan': karyawan_items[0]['jabatan'],
 			'tk': tk,
-			'foto_ktp': InlineImage(doc, foto_ktp_path, width=Mm(70), height=Mm(50)) if foto_ktp_path else None,
-			'foto_vaksin': InlineImage(doc, foto_ktp_path, width=Mm(70), height=Mm(50)) if foto_vaksin_path else None,
+			'foto_ktp': InlineImage(doc, foto_ktp_path, width=Mm(70), height=Mm(50)) if foto_ktp_path else '',
+			'foto_vaksin': InlineImage(doc, foto_ktp_path, width=Mm(70), height=Mm(50)) if foto_vaksin_path else '',
 		}
 
 		# Render template
@@ -95,11 +97,11 @@ class SuratTugas(Document):
 			foto_ktp_path = None
 			foto_vaksin_path = None
 
-			if karyawan['foto_ktp']:
+			if karyawan['foto_ktp'] is not None:
 				foto_ktp_name = karyawan['foto_ktp'].split('/')[-1]
 				foto_ktp_path = frappe.utils.get_site_path('private', 'files', foto_ktp_name)
 
-			if karyawan['foto_vaksin']:
+			if karyawan['foto_vaksin'] is not None:
 				foto_vaksin_name = karyawan['foto_vaksin'].split('/')[-1]
 				foto_vaksin_path = frappe.utils.get_site_path('private', 'files', foto_vaksin_name)
 
@@ -111,14 +113,14 @@ class SuratTugas(Document):
 				'nrp': karyawan['nrp'],
 				'jabatan': karyawan['jabatan'],
 				'tk': tk,
-				'foto_ktp': InlineImage(doc, foto_ktp_path, width=Mm(70), height=Mm(50)) if foto_ktp_path else None,
-				'foto_vaksin': InlineImage(doc, foto_vaksin_path, width=Mm(70), height=Mm(50)) if foto_vaksin_path else None,
+				'foto_ktp': InlineImage(doc, foto_ktp_path, width=Mm(70), height=Mm(50)) if foto_ktp_path else '',
+				'foto_vaksin': InlineImage(doc, foto_vaksin_path, width=Mm(70), height=Mm(50)) if foto_vaksin_path else '',
 			})
 
 		context = {
 			'no_surat': self.no_surat,
 			'keperluan': keperluan,
-			'lokasi_site': self.lokasi_site,
+			'lokasi_site': self.site,
 			'tanggal': tanggal,
 			'karyawan': table_context
 		}
@@ -187,7 +189,7 @@ class SuratTugas(Document):
 		file_url = _file.file_url
 
 		# Save the file URL or path back to the document
-		self.file_url = file_url  # Assumes 'file_url' field exists on the Surat Tugas doctype
+		self.doc_url = file_url  # Assumes 'file_url' field exists on the Surat Tugas doctype
 
 		# Optionally log or debug
 		frappe.logger().info(f"File {nama_surat} saved successfully with URL {file_url}")
