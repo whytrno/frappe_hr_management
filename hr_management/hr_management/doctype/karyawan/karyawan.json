@@ -30,6 +30,7 @@
   "column_break_hjzs",
   "tanggal_bergabung",
   "status_kontrak",
+  "status",
   "kontak_darurat_tab",
   "nama_kontak_darurat",
   "no_kontak_darurat",
@@ -238,12 +239,19 @@
    "fieldtype": "Link",
    "label": "User ID",
    "options": "User"
+  },
+  {
+   "default": "Aktif",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Aktif\nTidak Aktif"
   }
  ],
  "image_field": "foto",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-09-29 11:31:05.819689",
+ "modified": "2024-09-29 14:09:19.950084",
  "modified_by": "Administrator",
  "module": "Hr Management",
  "name": "Karyawan",
