@@ -11,7 +11,7 @@ class SuratTugas(Document):
 	def before_submit(self):
 		karyawan_items = self.get_karyawan_data();
 
-		nama_surat = f'{self.no_surat.replace('/', '-')}.docx'
+		nama_surat = f"{self.no_surat.replace('/', '-')}.docx"
 		# file = frappe.utils.get_site_path('private', 'files', 'test.txt')
 
 		generated_docx = self.generate_document(nama_surat, karyawan_items)
