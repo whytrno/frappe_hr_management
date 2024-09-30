@@ -8,7 +8,7 @@
 		"build": "vite build --base=/assets/hr_management/frontend/ && yarn copy-html-entry",
 		"ionic:build": "npm run build",
 		"ionic:serve": "vite dev --host",
-		"copy-html-entry": "cp ../hr_management/public/frontend/index.html ../hr_management/www/hrms.html"
+		"copy-html-entry": "cp ../hr_management/public/frontend/index.html ../hr_management/www/hr_management.html"
 	},
 	"dependencies": {
 		"@ionic/vue": "^7.4.3",

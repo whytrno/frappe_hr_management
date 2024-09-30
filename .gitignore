@@ -3,5 +3,20 @@
 *.egg-info
 *.swp
 tags
+hr_management/public/dist
+hr_management/public/node_modules
+hr_management/docs/current
+node_modules/
+dist/
+__pycache__/
+
+# build/
+.vscode
+.vs
 node_modules
-__pycache__
+*debug.log
+hr_management/docs/current
+hr_management/public/frontend
+hr_management/www/hr_management.html
+hr_management/public/roster
+hr_management/www/roster.html
