@@ -6,6 +6,7 @@ from frappe.model.document import Document
 from docxtpl import DocxTemplate, InlineImage
 from docx.shared import Mm
 from frappe.utils.file_manager import save_file
+from docx2pdf import convert
 
 class SuratTugas(Document):
 	def before_submit(self):
@@ -45,13 +46,21 @@ class SuratTugas(Document):
 		if len(karyawan_items) > 1:
 			template_path = frappe.get_app_path('hr_management', 'templates', 'docs', 'st_kelompok.docx')
 			doc = DocxTemplate(template_path)
+			docx_file_path = self.generate_single_document(doc, karyawan_items, keperluan, tanggal, nama_surat)
 
-			return self.generate_kelompok_document(doc, karyawan_items, keperluan, tanggal, nama_surat)
+			pdf_file_path = frappe.utils.get_site_path('private', 'files', 'surat_keterangan.pdf')
+			convert(docx_file_path, pdf_file_path)
+
+			return docx_file_path
 		else:
 			template_path = frappe.get_app_path('hr_management', 'templates', 'docs', 'st.docx')
 			doc = DocxTemplate(template_path)
+			docx_file_path = self.generate_single_document(doc, karyawan_items, keperluan, tanggal, nama_surat)
 
-			return self.generate_single_document(doc, karyawan_items, keperluan, tanggal, nama_surat)
+			pdf_file_path = frappe.utils.get_site_path('private', 'files', 'surat_keterangan.pdf')
+			convert(docx_file_path, pdf_file_path)
+
+			return docx_file_path
 
 		# pdf_file_path = frappe.utils.get_site_path('private', 'files', 'surat_keterangan.pdf')
 		# pypandoc.convert_file(docx_file_path, 'pdf', outputfile=pdf_file_path)
